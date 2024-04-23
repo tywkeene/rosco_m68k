@@ -16,7 +16,19 @@ endif
 
 -include $(ROSCO_M68K_DIR)/code/software/software.mk
 
-EXTRA_CFLAGS=-Wno-format-zero-length -Wno-format -Wno-implicit-function-declaration \
-			 -Wunused-variable -Wno-pedantic -DDEBUG
+compile_commands:
+	compiledb make
+
+KERNEL_INCLUDE=$(ROSCO_M68K_DIR)/code/firmware/rosco_m68k_firmware/kernel/include/
+KERNEL_LIBS=$(ROSCO_M68K_DIR)/code/firmware/rosco_m68k_firmware/kernel
+
+EXTRA_LDFLAGS=--strip-debug
+EXTRA_CFLAGS=-Wno-format-zero-length -Wno-format \
+			 -Wno-implicit-function-declaration  \
+			 -Wunused-variable -Wno-pedantic     \
+			 -I./include -I./$(KERNEL_INCLUDE)   \
+			 -L./$(KERNEL_LIBS)                  \
+#			 -DDEBUG             				 \
+			 -O3
+
 EXTRA_LIBS=-lmachine
-# EXTRA_VASMFLAGS?=-showopt
